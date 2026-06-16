@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mattermost Upgrade Path Checker</title>
+  <meta name="description" content="Check if your Mattermost upgrade is safe. See the exact ESR hop path and known issues for your version pair." />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+<div class="container">
+
+  <div class="logo">
+    <div class="logo-icon">⬆</div>
+    <span class="logo-text">Mattermost upgrade path checker</span>
+  </div>
+  <p class="site-tagline">Check if your upgrade is safe before you proceed</p>
+
+  <div class="input-card">
+    <form id="upgrade-form" autocomplete="off">
+      <div class="fields">
+        <div class="field">
+          <label for="from-version">Current version</label>
+          <input id="from-version" type="text" list="version-list"
+            placeholder="e.g. 10.11.15" required />
+        </div>
+        <div class="field">
+          <label for="to-version">Target version</label>
+          <input id="to-version" type="text" list="version-list"
+            placeholder="e.g. 11.7.2" required />
+        </div>
+        <div class="field">
+          <label for="pg-version">PostgreSQL version <span class="optional-tag">optional</span></label>
+          <input id="pg-version" type="text" placeholder="e.g. 12, 13, 14" />
+        </div>
+        <button type="submit" class="btn-check">Check upgrade path ↗</button>
+      </div>
+      <datalist id="version-list"></datalist>
+    </form>
+  </div>
+
+  <div id="results"></div>
+
+  <footer class="site-footer">
+    <span id="data-meta">Loading…</span>
+    <div class="footer-links">
+      <a href="https://docs.mattermost.com/upgrade/important-upgrade-notes.html" target="_blank" rel="noopener">Upgrade notes ↗</a>
+      <a href="https://docs.mattermost.com/upgrade/extended-support-release.html" target="_blank" rel="noopener">ESR schedule ↗</a>
+    </div>
+  </footer>
+
+</div>
+<script src="js/upgrade-path.js?v=3"></script>
+<script src="js/render.js?v=3"></script>
+<script src="js/app.js?v=3"></script>
+</body>
+</html>
