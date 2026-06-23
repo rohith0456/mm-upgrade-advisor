@@ -188,7 +188,10 @@ function computePath(fromStr, toStr, data, options) {
     safeDetail = 'Always back up your database and test in staging before upgrading production.';
   }
 
-  return { from: verToStr(from), to: verToStr(to), steps, warnings, estimatedEffort, totalSteps: steps.length, isSafe, safeReason, safeDetail };
+  const compatMap = data.client_compatibility || {};
+  const clientCompat = compatMap[String(to[0])] || null;
+
+  return { from: verToStr(from), to: verToStr(to), steps, warnings, estimatedEffort, totalSteps: steps.length, isSafe, safeReason, safeDetail, clientCompat };
 }
 
 // Export for use in app.js (no module system — just globals)

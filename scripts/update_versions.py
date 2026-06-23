@@ -46,6 +46,9 @@ UPGRADE_NOTES_URL = (
 ESR_PAGE_URL = (
     "https://docs.mattermost.com/upgrade/extended-support-release.html"
 )
+COMPAT_PAGE_URL = (
+    "https://docs.mattermost.com/about/server-client-compatibility-matrix.html"
+)
 
 # ── Helpers ────────────────────────────────────────────────────────────────
 VER_RE = re.compile(r"^v?(\d+)\.(\d+)\.(\d+)$")
@@ -161,7 +164,34 @@ def fetch_esr_versions(session: requests.Session, seed_esrs: list[str]) -> list[
         return seed_esrs
 
 
-# ── Phase 4: Merge and write ────────────────────────────────────────────────
+# ── Phase 4: Compatibility matrix ──────────────────────────────────────────
+
+def fetch_client_compatibility(session: requests.Session, seed_compat: dict) -> dict:
+    print("Phase 4: fetching client compatibility matrix…")
+    try:
+        resp = session.get(COMPAT_PAGE_URL, timeout=20)
+        resp.raise_for_status()
+    except Exception as e:
+        print(f"  ⚠ Could not fetch compatibility page: {e} — using seed data")
+        return seed_compat
+
+    try:
+        from parse_compatibility import parse_compatibility
+        parsed = parse_compatibility(resp.text)
+        if not parsed:
+            print("  ⚠ No compatibility data parsed — using seed data")
+            return seed_compat
+        # Merge: scraped data wins, seed fills gaps for majors not found
+        merged = dict(seed_compat)
+        merged.update(parsed)
+        print(f"  → Compatibility entries: {sorted(merged.keys())}")
+        return merged
+    except Exception as e:
+        print(f"  ⚠ Compatibility parse failed: {e} — using seed data")
+        return seed_compat
+
+
+# ── Phase 5: Merge and write ────────────────────────────────────────────────
 
 ESR_VER_MAP: dict[str, str] = {}  # major.minor → type tag, built during merge
 
@@ -303,6 +333,7 @@ def main() -> int:
     seed_esrs = existing_data.get("esr_versions", [])
     existing_bugs = existing_data.get("known_bugs", [])
     existing_notes_by_ver = existing_data.get("upgrade_notes_by_version", {})
+    existing_compat = existing_data.get("client_compatibility", {})
 
     # Fetch from sources
     try:
@@ -313,6 +344,7 @@ def main() -> int:
 
     upgrade_notes = fetch_upgrade_notes(session)
     esr_versions = fetch_esr_versions(session, seed_esrs)
+    client_compat = fetch_client_compatibility(session, existing_compat)
 
     # Merge
     merged_versions, added, updated = merge(
@@ -331,6 +363,7 @@ def main() -> int:
         "esr_versions": esr_versions if esr_versions else seed_esrs,
         "versions": merged_versions,
         "known_bugs": existing_bugs,  # never overwrite — curated manually
+        "client_compatibility": client_compat,
         "upgrade_notes_by_version": merged_notes,
     }
 

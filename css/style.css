@@ -274,6 +274,9 @@ a:hover { text-decoration: underline; }
 
 .checklist-item.is-checked { color: #9ca3af; text-decoration: line-through; }
 
+/* ── Client compatibility note ────────────────────────────────────── */
+.compat-note { font-size: .78rem; color: #9ca3af; margin-top: .65rem; }
+
 /* ── Workaround box ───────────────────────────────────────────── */
 .workaround-box {
   font-size: .875rem;

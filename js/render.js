@@ -113,7 +113,7 @@ function renderPath(result, container) {
   const fromNode = `<span class="path-node path-from">${escHtml(result.from)}<span class="path-you">you are here</span></span>`;
 
   const esrNote = hasESRHops
-    ? `<p class="path-note">Upgrading from one ESR to the next is the officially recommended and fully tested upgrade path.</p>`
+    ? `<p class="path-note">This path hops through each ESR in sequence — the only fully tested upgrade route. Skipping an ESR is technically supported but <em>not tested by Mattermost</em> and may cause database migration failures.</p>`
     : '';
 
   parts.push(`
@@ -122,6 +122,7 @@ function renderPath(result, container) {
       ${esrNote}
       <div class="path-row">${fromNode}<span class="path-arrow">→</span>${pathArrows}</div>
       ${stepNotesHtml ? `<div class="step-notes">${stepNotesHtml}</div>` : ''}
+      ${result.clientCompat ? `<p class="compat-note">After this upgrade — Desktop app ${escHtml(result.clientCompat.desktop_min)}+ &middot; Mobile app ${escHtml(result.clientCompat.mobile_min)}+ required &middot; <a href="https://docs.mattermost.com/about/server-client-compatibility-matrix.html" target="_blank" rel="noopener">Full matrix ↗</a></p>` : ''}
     </div>`);
 
   // ── High-severity (non-critical) warnings ─────────────────────────────
