@@ -113,7 +113,7 @@ function renderPath(result, container) {
   const fromNode = `<span class="path-node path-from">${escHtml(result.from)}<span class="path-you">you are here</span></span>`;
 
   const esrNote = hasESRHops
-    ? `<p class="path-note">This path hops through each ESR in sequence — the only fully tested upgrade route. Skipping an ESR is technically supported but <em>not tested by Mattermost</em> and may cause database migration failures.</p>`
+    ? `<p class="path-note">This path hops through each ESR in sequence — the only fully tested upgrade route. Skipping an ESR is technically supported but not tested by Mattermost.</p>`
     : '';
 
   parts.push(`
