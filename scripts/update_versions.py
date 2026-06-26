@@ -333,7 +333,12 @@ def main() -> int:
     seed_esrs = existing_data.get("esr_versions", [])
     existing_bugs = existing_data.get("known_bugs", [])
     existing_notes_by_ver = existing_data.get("upgrade_notes_by_version", {})
-    existing_compat = existing_data.get("client_compatibility", {})
+    existing_compat = existing_data.get("client_compatibility") or {}
+    # If versions.json has no compat data (e.g. first run after feature was added),
+    # seed.json is the authoritative fallback
+    if not existing_compat and SEED_FILE.exists():
+        with SEED_FILE.open() as _sf:
+            existing_compat = json.load(_sf).get("client_compatibility", {})
 
     # Fetch from sources
     try:
