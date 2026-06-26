@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-06-26T09:35:08+00:00",
+    "generated_at": "2026-06-26T09:36:48+00:00",
     "generated_by": "scripts/update_versions.py",
     "latest_version": "11.8.2",
     "latest_esr": "11.6.0",
@@ -1204,7 +1204,28 @@
       "source_url": "https://docs.mattermost.com/upgrade/important-upgrade-notes.html"
     }
   ],
-  "client_compatibility": {},
+  "client_compatibility": {
+    "7": {
+      "desktop_min": "5.0",
+      "mobile_min": "1.55"
+    },
+    "8": {
+      "desktop_min": "5.3",
+      "mobile_min": "2.5"
+    },
+    "9": {
+      "desktop_min": "5.6",
+      "mobile_min": "2.12"
+    },
+    "10": {
+      "desktop_min": "5.8",
+      "mobile_min": "2.16"
+    },
+    "11": {
+      "desktop_min": "5.10",
+      "mobile_min": "2.18"
+    }
+  },
   "upgrade_notes_by_version": {
     "9.8": "TeamSettings.EnableOpenServer is deprecated — replace with TeamSettings.EnableUserCreation in your config.",
     "9.10": "CSRF enforcement tightened: all integrations must now send X-Requested-With: XMLHttpRequest on state-changing API calls or receive 403. Update all custom integrations before upgrading.",
