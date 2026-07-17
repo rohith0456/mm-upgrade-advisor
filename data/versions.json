@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-07-16T08:20:26+00:00",
+    "generated_at": "2026-07-17T08:16:24+00:00",
     "generated_by": "scripts/update_versions.py",
     "latest_version": "11.9.0",
     "latest_esr": "11.6.0",
@@ -536,6 +536,19 @@
       "min_mysql_version": null,
       "security_fix_count": 1,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v10.11.21",
+      "changelog_url": "https://docs.mattermost.com/install/self-managed-changelog.html"
+    },
+    {
+      "version": "10.11.22",
+      "release_type": "regular",
+      "release_date": "2026-07-17",
+      "headline": "",
+      "breaking_changes": [],
+      "upgrade_notes": "",
+      "min_pg_version": null,
+      "min_mysql_version": null,
+      "security_fix_count": 1,
+      "download_url": "https://github.com/mattermost/mattermost/releases/tag/v10.11.22",
       "changelog_url": "https://docs.mattermost.com/install/self-managed-changelog.html"
     },
     {
@@ -1126,6 +1139,19 @@
       "changelog_url": "https://docs.mattermost.com/install/self-managed-changelog.html"
     },
     {
+      "version": "11.7.7",
+      "release_type": "regular",
+      "release_date": "2026-07-17",
+      "headline": "",
+      "breaking_changes": [],
+      "upgrade_notes": "",
+      "min_pg_version": null,
+      "min_mysql_version": null,
+      "security_fix_count": 1,
+      "download_url": "https://github.com/mattermost/mattermost/releases/tag/v11.7.7",
+      "changelog_url": "https://docs.mattermost.com/install/self-managed-changelog.html"
+    },
+    {
       "version": "11.8.0",
       "release_type": "regular",
       "release_date": "2026-06-09",
@@ -1175,6 +1201,19 @@
       "min_mysql_version": null,
       "security_fix_count": 0,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v11.8.3",
+      "changelog_url": "https://docs.mattermost.com/install/self-managed-changelog.html"
+    },
+    {
+      "version": "11.8.4",
+      "release_type": "regular",
+      "release_date": "2026-07-17",
+      "headline": "",
+      "breaking_changes": [],
+      "upgrade_notes": "",
+      "min_pg_version": null,
+      "min_mysql_version": null,
+      "security_fix_count": 1,
+      "download_url": "https://github.com/mattermost/mattermost/releases/tag/v11.8.4",
       "changelog_url": "https://docs.mattermost.com/install/self-managed-changelog.html"
     },
     {
