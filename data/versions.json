@@ -1,6 +1,6 @@
 {
   "meta": {
-    "generated_at": "2026-09-23T11:06:45+00:00",
+    "generated_at": "2026-09-24T11:23:45+00:00",
     "generated_by": "scripts/update_versions.py",
     "latest_version": "11.11.0",
     "latest_esr": "11.6.0",
