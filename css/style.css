@@ -391,3 +391,11 @@ a:hover { text-decoration: underline; }
   .path-row { gap: .25rem; }
   .site-footer { flex-direction: column; }
 }
+
+/* Searchable version picker (v7+). */
+.field { position: relative; min-width: 0; }
+.version-menu { position: absolute; top: 100%; left: 0; right: 0; z-index: 30; max-height: 240px; overflow-y: auto; background: #fff; border: 1px solid var(--border); border-radius: 8px; box-shadow: 0 10px 25px #00000016; padding: 4px; }
+.version-menu[hidden] { display: none; }
+.version-option { display: block; width: 100%; text-align: left; border: 0; background: transparent; padding: 7px 10px; border-radius: 5px; color: var(--text); cursor: pointer; font: inherit; }
+.version-option:hover, .version-option:focus { background: #eef2ff; }
+.version-hint { padding: 8px 10px; font-size: .78rem; color: var(--text-muted); }
