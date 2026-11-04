@@ -6,7 +6,7 @@ const MAX_SUGGESTIONS = 80;
 
 function populateDatalist(data) {
   availableVersions = [...new Set((data.versions || []).map(v => v.version))]
-    .filter(v => /^\\d+\\.\\d+\\.\\d+$/.test(v))
+    .filter(v => /^\d+\.\d+\.\d+$/.test(v))
     .sort((a, b) => {
       const aa = a.split('.').map(Number);
       const bb = b.split('.').map(Number);
