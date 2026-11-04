@@ -333,8 +333,7 @@ def write_atomic(data: dict) -> None:
     try:
         with os.fdopen(fd, "w") as f:
             json.dump(data, f, indent=2, ensure_ascii=False)
-            f.write("
-")
+            f.write("\n")
         os.replace(tmp_path, DATA_FILE)
     except Exception:
         os.unlink(tmp_path)
@@ -407,8 +406,7 @@ def main() -> int:
     }
 
     write_atomic(final)
-    print(f"
-✓ data/versions.json updated: +{added} new, ~{updated} refreshed")
+    print(f"\n✓ data/versions.json updated: +{added} new, ~{updated} refreshed")
     return 0
 
 
