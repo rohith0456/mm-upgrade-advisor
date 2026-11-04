@@ -280,6 +280,9 @@ def merge(
     # Also refresh upgrade_notes_by_version with newly fetched RST data
     # (returned separately — caller stores it)
 
+    for rec in idx.values():
+        rec["release_type"] = _determine_release_type(rec["version"], esr_versions)
+
     # Sort by version ascending
     def sort_key(r):
         t = parse_ver(r["version"])
@@ -297,7 +300,7 @@ def compute_meta(versions: list[dict], esr_versions: list[str], existing_meta: d
     all_vers = [r["version"] for r in versions]
     latest = max(all_vers, key=ver_key) if all_vers else ""
     latest_esr = max(
-        (r["version"] for r in versions if r.get("release_type") == "esr"),
+        (r["version"] for r in versions if major_minor(r["version"]) in esr_versions),
         key=ver_key,
         default="",
     )
@@ -345,7 +348,7 @@ def main() -> int:
     # Load baseline
     existing_data = load_existing()
     existing_versions = existing_data.get("versions", [])
-    seed_esrs = existing_data.get("esr_versions", [])
+    seed_esrs = ["7.1", "7.8", "8.1", "9.5", "9.11", "10.5", "10.11", "11.7"]
     existing_bugs = existing_data.get("known_bugs", [])
     existing_notes_by_ver = existing_data.get("upgrade_notes_by_version", {})
     existing_compat = existing_data.get("client_compatibility") or {}
@@ -363,7 +366,7 @@ def main() -> int:
         return 1
 
     upgrade_notes = fetch_upgrade_notes(session)
-    esr_versions = fetch_esr_versions(session, seed_esrs)
+    esr_versions = seed_esrs  # Verified historical ESR schedule; avoid unverified scraper overrides
     client_compat = fetch_client_compatibility(session, existing_compat)
 
     # Merge
