@@ -399,3 +399,6 @@ a:hover { text-decoration: underline; }
 .version-option { display: block; width: 100%; text-align: left; border: 0; background: transparent; padding: 7px 10px; border-radius: 5px; color: var(--text); cursor: pointer; font: inherit; }
 .version-option:hover, .version-option:focus { background: #eef2ff; }
 .version-hint { padding: 8px 10px; font-size: .78rem; color: var(--text-muted); }
+
+/* Distinguish ESR series from the exact patch to install. */
+.path-patch { display: block; font-size: .7rem; font-weight: 500; color: #4b5563; white-space: nowrap; margin-top: .12rem; }
