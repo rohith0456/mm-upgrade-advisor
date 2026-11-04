@@ -1,32 +1,55 @@
 let appData = null;
 
-// Keep suggestions manageable: browsers truncate very large native datalists.
+// All v7+ releases remain searchable; only visible suggestions are capped.
 let availableVersions = [];
-const MAX_SUGGESTIONS = 80;
-
 function populateDatalist(data) {
   availableVersions = [...new Set((data.versions || []).map(v => v.version))]
-    .filter(v => /^\d+\.\d+\.\d+$/.test(v))
+    .filter(v => /^\d+\.\d+\.\d+$/.test(v) && Number(v.split('.')[0]) >= 7)
     .sort((a, b) => {
-      const aa = a.split('.').map(Number);
-      const bb = b.split('.').map(Number);
-      for (let i = 0; i < 3; i++) {
-        if (aa[i] !== bb[i]) return bb[i] - aa[i];
-      }
-      return 0;
+      const x = a.split('.').map(Number), y = b.split('.').map(Number);
+      return y[0]-x[0] || y[1]-x[1] || y[2]-x[2];
     });
-  refreshVersionSuggestions('');
 }
-
-function refreshVersionSuggestions(query) {
-  const q = String(query || '').trim().replace(/^v/i, '');
-  const matches = q ? availableVersions.filter(v => v.startsWith(q)) : availableVersions;
-  const dl = document.getElementById('version-list');
-  dl.replaceChildren(...matches.slice(0, MAX_SUGGESTIONS).map(v => {
-    const option = document.createElement('option');
-    option.value = v;
-    return option;
-  }));
+function setupVersionPicker(input) {
+  input.removeAttribute('list');
+  input.setAttribute('autocomplete', 'off');
+  const parent = input.parentNode;
+  const menu = document.createElement('div');
+  menu.className = 'version-menu';
+  menu.hidden = true;
+  parent.appendChild(menu);
+  const close = () => { menu.hidden = true; };
+  const show = () => {
+    const q = input.value.trim().replace(/^v/i, '');
+    const matches = q ? availableVersions.filter(v => v.startsWith(q)) : availableVersions;
+    menu.replaceChildren();
+    for (const version of matches.slice(0, 100)) {
+      const option = document.createElement('button');
+      option.type = 'button';
+      option.className = 'version-option';
+      option.textContent = version;
+      option.addEventListener('pointerdown', e => e.preventDefault());
+      option.addEventListener('click', () => { input.value = version; close(); input.focus(); });
+      menu.appendChild(option);
+    }
+    if (matches.length > 100) {
+      const hint = document.createElement('div');
+      hint.className = 'version-hint';
+      hint.textContent = 'Type a version prefix to search all releases from v7 onward';
+      menu.appendChild(hint);
+    }
+    if (!matches.length) {
+      const hint = document.createElement('div');
+      hint.className = 'version-hint';
+      hint.textContent = 'No matching version';
+      menu.appendChild(hint);
+    }
+    menu.hidden = false;
+  };
+  input.addEventListener('focus', show);
+  input.addEventListener('input', show);
+  input.addEventListener('keydown', e => { if (e.key === 'Escape') close(); });
+  document.addEventListener('pointerdown', e => { if (!parent.contains(e.target)) close(); });
 }
 
 function updateMeta(data) {
@@ -55,11 +78,7 @@ function onSubmit(e) {
 function init(data) {
   appData = data;
   populateDatalist(data);
-  for (const id of ['from-version', 'to-version']) {
-    const input = document.getElementById(id);
-    input.addEventListener('input', () => refreshVersionSuggestions(input.value));
-    input.addEventListener('focus', () => refreshVersionSuggestions(input.value));
-  }
+  for (const id of ['from-version', 'to-version']) setupVersionPicker(document.getElementById(id));
   updateMeta(data);
   document.getElementById('upgrade-form').addEventListener('submit', onSubmit);
   const params = new URLSearchParams(window.location.search);
