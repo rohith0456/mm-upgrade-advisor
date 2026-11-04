@@ -60,7 +60,7 @@ function renderPath(result, container) {
       : `<p class="safe-detail">Always back up your database and test in staging before upgrading production.</p>`;
     parts.push(`
       <div class="result-card result-safe">
-        <div class="card-title"><span class="card-icon">✓</span> No tracked issues found</div>
+        <div class="card-title"><span class="card-icon">✓</span> No critical issues in the tracked list</div>
         <p>${escHtml(result.safeReason)}</p>
         ${disclaimer}
       </div>`);
@@ -99,7 +99,7 @@ function renderPath(result, container) {
 
   const pathArrows = result.steps.map((step, i) => {
     const rec = step.versionData;
-    const isESR = rec && rec.release_type === 'esr';
+    const isESR = step.isESRHop;
     const isLast = i === result.steps.length - 1;
     const badge = isESR ? ' <span class="path-badge">ESR</span>' : '';
     const dlLink = rec && rec.download_url
@@ -113,7 +113,7 @@ function renderPath(result, container) {
   const fromNode = `<span class="path-node path-from">${escHtml(result.from)}<span class="path-you">you are here</span></span>`;
 
   const esrNote = hasESRHops
-    ? `<p class="path-note">This path hops through each ESR in sequence — the only fully tested upgrade route. Skipping an ESR is technically supported but not tested by Mattermost.</p>`
+    ? `<p class="path-note">This path hops through each ESR in sequence — the consecutive ESR route recommended for tested upgrade transitions. Skipping ESRs may be supported but is not tested by Mattermost; review prerequisites for every hop.</p>`
     : '';
 
   parts.push(`
@@ -140,7 +140,7 @@ function renderPath(result, container) {
   const noteBug = result.warnings.find(w => w.severity === 'critical') || result.warnings[0] || null;
   const bugNote = noteBug
     ? `Tracked issue: ${noteBug.title.toLowerCase()}.${noteBug.fixed_in ? ` Fix in v${noteBug.fixed_in}.` : ''} <a href="${escHtml(noteBug.source_url || 'https://docs.mattermost.com/upgrade/important-upgrade-notes.html')}" target="_blank" rel="noopener">Source ↗</a>`
-    : `No tracked issues for this path. <a href="https://docs.mattermost.com/upgrade/important-upgrade-notes.html" target="_blank" rel="noopener">Official upgrade notes ↗</a>`;
+    : `No matching issues in the curated list; this is not a guarantee of upgrade safety. <a href="https://docs.mattermost.com/upgrade/important-upgrade-notes.html" target="_blank" rel="noopener">Official upgrade notes ↗</a>`;
 
   parts.push(`<p class="result-footer">Based on official Mattermost docs and known bug reports. ${bugNote}</p>`);
 
