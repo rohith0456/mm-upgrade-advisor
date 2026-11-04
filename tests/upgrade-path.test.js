@@ -29,7 +29,7 @@ const pg12 = compute('9.5.8', '11.7.14', data, {pgVersion: '12'});
 const db12 = pg12.warnings.find(w => w.bug_id === 'postgres_requirement');
 assert(db12 && /10.6.0/.test(db12.description) && /14/.test(db12.title));
 const pg14 = compute('9.5.8', '11.7.14', data, {pgVersion: '14'});
-assert(!pg14.warnings.some(w => w.bug_id === 'postgres_requirement'));
+assert(!pg14.warnings.some(w => w.bug_id === 'postgres_requirement' || w.bug_id === 'mysql_removed'));
 const pg13 = compute('9.5.8', '10.11.25', data, {pgVersion: '13'});
 assert(!pg13.warnings.some(w => w.bug_id === 'postgres_requirement'));
 const pg12To10 = compute('9.5.8', '10.11.25', data, {pgVersion: '12'});
