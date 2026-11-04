@@ -30,7 +30,7 @@
       "headline": "Extended Support Release — enhanced compliance and audit logging",
       "breaking_changes": [],
       "upgrade_notes": "ESR release. Requires PostgreSQL 10+ or MySQL 5.7.12+. First ESR for teams needing long-term stability on the 7.x series.",
-      "min_pg_version": "10",
+      "min_pg_version": null,
       "min_mysql_version": "5.7",
       "security_fix_count": 3,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v7.1.0",
@@ -46,7 +46,7 @@
         "ServiceSettings.ListenAddress deprecated — use ServiceSettings.ListenAddress with explicit host binding."
       ],
       "upgrade_notes": "ESR release. Requires PostgreSQL 10+ or MySQL 5.7.12+. Includes RBAC improvements and better plugin management. Last ESR before 8.x series.",
-      "min_pg_version": "10",
+      "min_pg_version": null,
       "min_mysql_version": "5.7",
       "security_fix_count": 4,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v7.8.0",
@@ -63,7 +63,7 @@
         "Calls plugin is now bundled — remove standalone Calls plugin before upgrading."
       ],
       "upgrade_notes": "ESR release. IMPORTANT: MySQL 5.7 is no longer supported — upgrade to MySQL 8.0+ before upgrading Mattermost. The Calls plugin is now bundled into the server — remove any standalone Calls plugin installation before upgrading to avoid conflicts. PostgreSQL 11+ required.",
-      "min_pg_version": "11",
+      "min_pg_version": null,
       "min_mysql_version": "8.0",
       "security_fix_count": 5,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v8.1.0",
@@ -212,7 +212,7 @@
       "headline": "Final 9.x Extended Support Release — security hardening",
       "breaking_changes": [],
       "upgrade_notes": "ESR release. Last ESR in the 9.x series. TLS 1.3 enforcement option added. Improved SAML/LDAP diagnostic tools. Upgrade to 10.5 ESR when ready to move to 10.x.",
-      "min_pg_version": null,
+      "min_pg_version": "11",
       "min_mysql_version": null,
       "security_fix_count": 5,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v9.11.0",
@@ -230,7 +230,7 @@
         "FileSettings.AmazonS3SSL renamed to FileSettings.AmazonS3SSLVerification — old key silently ignored."
       ],
       "upgrade_notes": "MAJOR RELEASE. CRITICAL: PostgreSQL 12 is no longer supported — upgrade your database to PostgreSQL 13+ before upgrading Mattermost. MySQL 5.7 is also no longer supported — upgrade to MySQL 8.0+. The legacy channel sidebar API is permanently removed. Check all custom integrations for sidebar API usage. Rename FileSettings.AmazonS3SSL to FileSettings.AmazonS3SSLVerification in your config.",
-      "min_pg_version": "13",
+      "min_pg_version": "11",
       "min_mysql_version": "8.0",
       "security_fix_count": 4,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v10.0.0",
@@ -243,7 +243,7 @@
       "headline": "AI enhancements and improved Calls plugin",
       "breaking_changes": [],
       "upgrade_notes": "If using Elasticsearch: after upgrading, purge and re-index to resolve index mapping mismatch. System Console → Elasticsearch → Purge Indexes, then Index Now.",
-      "min_pg_version": "13",
+      "min_pg_version": "11",
       "min_mysql_version": "8.0",
       "security_fix_count": 2,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v10.1.0",
@@ -258,7 +258,7 @@
         "LogSettings.FileLevel deprecated — use LogSettings.ConsoleLevel and advanced logging config."
       ],
       "upgrade_notes": "LogSettings.FileLevel is deprecated. Update your logging config to use LogSettings.ConsoleLevel and advanced logging configuration.",
-      "min_pg_version": "13",
+      "min_pg_version": "11",
       "min_mysql_version": "8.0",
       "security_fix_count": 3,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v10.2.0",
@@ -271,7 +271,7 @@
       "headline": "Stability and performance improvements",
       "breaking_changes": [],
       "upgrade_notes": "",
-      "min_pg_version": "13",
+      "min_pg_version": "11",
       "min_mysql_version": "8.0",
       "security_fix_count": 2,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v10.3.0",
@@ -284,7 +284,7 @@
       "headline": "API improvements and Playbooks enhancements",
       "breaking_changes": [],
       "upgrade_notes": "",
-      "min_pg_version": "13",
+      "min_pg_version": "11",
       "min_mysql_version": "8.0",
       "security_fix_count": 2,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v10.4.0",
@@ -298,7 +298,7 @@
       "headline": "Extended Support Release — security hardening and compliance improvements",
       "breaking_changes": [],
       "upgrade_notes": "ESR release. OAuth 2.0 PKCE support added for public clients. Personal Access Token rotation support. LDAP nested group sync (up to 3 levels). AI Copilot meeting notes generation. PostgreSQL 13+ and MySQL 8.0+ still required.",
-      "min_pg_version": "13",
+      "min_pg_version": "11",
       "min_mysql_version": "8.0",
       "security_fix_count": 5,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v10.5.0",
@@ -390,8 +390,8 @@
       "headline": "Extended Support Release — first 11.x ESR",
       "breaking_changes": [],
       "upgrade_notes": "ESR release. First ESR in the 11.x series. Recommended upgrade target from 10.5 ESR.",
-      "min_pg_version": "13",
-      "min_mysql_version": "8.0",
+      "min_pg_version": "14",
+      "min_mysql_version": null,
       "security_fix_count": 4,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v11.0.0",
       "changelog_url": "https://docs.mattermost.com/install/self-managed-changelog.html"
@@ -403,8 +403,8 @@
       "headline": "Feature release",
       "breaking_changes": [],
       "upgrade_notes": "",
-      "min_pg_version": "13",
-      "min_mysql_version": "8.0",
+      "min_pg_version": "14",
+      "min_mysql_version": null,
       "security_fix_count": 2,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v11.1.0",
       "changelog_url": "https://docs.mattermost.com/install/self-managed-changelog.html"
@@ -416,8 +416,8 @@
       "headline": "Feature release",
       "breaking_changes": [],
       "upgrade_notes": "",
-      "min_pg_version": "13",
-      "min_mysql_version": "8.0",
+      "min_pg_version": "14",
+      "min_mysql_version": null,
       "security_fix_count": 2,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v11.2.0",
       "changelog_url": "https://docs.mattermost.com/install/self-managed-changelog.html"
@@ -429,8 +429,8 @@
       "headline": "Feature release",
       "breaking_changes": [],
       "upgrade_notes": "",
-      "min_pg_version": "13",
-      "min_mysql_version": "8.0",
+      "min_pg_version": "14",
+      "min_mysql_version": null,
       "security_fix_count": 3,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v11.3.0",
       "changelog_url": "https://docs.mattermost.com/install/self-managed-changelog.html"
@@ -442,8 +442,8 @@
       "headline": "Feature release",
       "breaking_changes": [],
       "upgrade_notes": "",
-      "min_pg_version": "13",
-      "min_mysql_version": "8.0",
+      "min_pg_version": "14",
+      "min_mysql_version": null,
       "security_fix_count": 2,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v11.4.0",
       "changelog_url": "https://docs.mattermost.com/install/self-managed-changelog.html"
@@ -455,8 +455,8 @@
       "headline": "Feature release",
       "breaking_changes": [],
       "upgrade_notes": "",
-      "min_pg_version": "13",
-      "min_mysql_version": "8.0",
+      "min_pg_version": "14",
+      "min_mysql_version": null,
       "security_fix_count": 2,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v11.5.0",
       "changelog_url": "https://docs.mattermost.com/install/self-managed-changelog.html"
@@ -469,8 +469,8 @@
       "headline": "Extended Support Release — latest ESR",
       "breaking_changes": [],
       "upgrade_notes": "ESR release. Latest supported ESR as of June 2026. Recommended upgrade target for production environments.",
-      "min_pg_version": "13",
-      "min_mysql_version": "8.0",
+      "min_pg_version": "14",
+      "min_mysql_version": null,
       "security_fix_count": 5,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v11.6.0",
       "changelog_url": "https://docs.mattermost.com/install/self-managed-changelog.html"
@@ -482,8 +482,8 @@
       "headline": "Feature release",
       "breaking_changes": [],
       "upgrade_notes": "WARNING: Versions 11.7.0, 11.7.1, and 11.7.2 contain a known database migration bug when upgrading from ≥10.11.17. Skip these versions and upgrade directly to 11.7.3 or later.",
-      "min_pg_version": "13",
-      "min_mysql_version": "8.0",
+      "min_pg_version": "14",
+      "min_mysql_version": null,
       "security_fix_count": 2,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v11.7.0",
       "changelog_url": "https://docs.mattermost.com/install/self-managed-changelog.html"
@@ -495,8 +495,8 @@
       "headline": "Patch release",
       "breaking_changes": [],
       "upgrade_notes": "WARNING: Contains a known database migration bug when upgrading from ≥10.11.17. Skip this version and upgrade directly to 11.7.3 or later.",
-      "min_pg_version": "13",
-      "min_mysql_version": "8.0",
+      "min_pg_version": "14",
+      "min_mysql_version": null,
       "security_fix_count": 1,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v11.7.1",
       "changelog_url": "https://docs.mattermost.com/install/self-managed-changelog.html"
@@ -508,8 +508,8 @@
       "headline": "Patch release",
       "breaking_changes": [],
       "upgrade_notes": "WARNING: Contains a known database migration bug when upgrading from ≥10.11.17. Skip this version and upgrade directly to 11.7.3 or later.",
-      "min_pg_version": "13",
-      "min_mysql_version": "8.0",
+      "min_pg_version": "14",
+      "min_mysql_version": null,
       "security_fix_count": 1,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v11.7.2",
       "changelog_url": "https://docs.mattermost.com/install/self-managed-changelog.html"
@@ -521,8 +521,8 @@
       "headline": "Patch release — fixes database migration bug",
       "breaking_changes": [],
       "upgrade_notes": "Fixes the database migration bug present in 11.7.0–11.7.2 when upgrading from ≥10.11.17. Safe to upgrade to from any version.",
-      "min_pg_version": "13",
-      "min_mysql_version": "8.0",
+      "min_pg_version": "14",
+      "min_mysql_version": null,
       "security_fix_count": 1,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v11.7.3",
       "changelog_url": "https://docs.mattermost.com/install/self-managed-changelog.html"
@@ -540,61 +540,44 @@
       "fixed_in": "11.7.3",
       "workaround": "Skip all 11.7.x versions below 11.7.3. If your current version is ≥10.11.17, upgrade directly to 11.7.3 or later.",
       "source_url": "https://docs.mattermost.com/upgrade/important-upgrade-notes.html"
-    },
-    {
-      "bug_id": "csrf_integration_403",
-      "severity": "high",
-      "title": "CSRF header change breaks integrations on upgrade to 9.10+",
-      "description": "From 9.10 onwards, all state-changing API calls require the X-Requested-With: XMLHttpRequest header. Integrations missing this header receive 403 Forbidden. This is a permanent breaking change — there is no config toggle to revert it.",
-      "affected_source_from": null,
-      "affected_target_from": "9.10.0",
-      "affected_target_to": null,
-      "fixed_in": null,
-      "workaround": "Update all custom integrations and third-party tools to include the X-Requested-With: XMLHttpRequest header on every API request.",
-      "source_url": "https://docs.mattermost.com/upgrade/important-upgrade-notes.html"
-    },
-    {
-      "bug_id": "pg12_dropped_10_0",
-      "category": "db_version",
-      "severity": "critical",
-      "title": "PostgreSQL 12 dropped in 10.0 — server will not start",
-      "description": "Mattermost 10.0 requires PostgreSQL 13 as a minimum. Instances running PostgreSQL 12 will fail to start after upgrading to 10.0+. MySQL 5.7 is also dropped; MySQL 8.0 is the new minimum.",
-      "affected_source_from": null,
-      "affected_target_from": "10.0.0",
-      "affected_target_to": null,
-      "fixed_in": null,
-      "workaround": "Upgrade your database to PostgreSQL 13+ (or MySQL 8.0+) BEFORE upgrading Mattermost. Do not upgrade Mattermost and the database simultaneously.",
-      "source_url": "https://docs.mattermost.com/upgrade/important-upgrade-notes.html"
     }
   ],
   "client_compatibility": {
-    "7": {
-      "desktop_min": "5.0",
-      "mobile_min": "1.55"
-    },
-    "8": {
-      "desktop_min": "5.3",
-      "mobile_min": "2.5"
-    },
-    "9": {
-      "desktop_min": "5.6",
-      "mobile_min": "2.12"
-    },
-    "10": {
-      "desktop_min": "5.8",
-      "mobile_min": "2.16"
-    },
-    "11": {
-      "desktop_min": "5.10",
-      "mobile_min": "2.18"
+    "11.7": {
+      "desktop": "6.2 ESR or 6.3",
+      "mobile": "Use the latest supported mobile release",
+      "desktop_url": "https://docs.mattermost.com/about/mattermost-desktop-releases",
+      "mobile_url": "https://docs.mattermost.com/product-overview/mattermost-mobile-releases"
     }
   },
   "upgrade_notes_by_version": {
     "9.8": "TeamSettings.EnableOpenServer is deprecated — replace with TeamSettings.EnableUserCreation in your config.",
-    "9.10": "CSRF enforcement tightened: all integrations must now send X-Requested-With: XMLHttpRequest on state-changing API calls or receive 403. Update all custom integrations before upgrading.",
-    "10.0": "MAJOR RELEASE. PostgreSQL 13+ required (12 dropped). MySQL 8.0+ required (5.7 dropped). Legacy sidebar API removed. Rename FileSettings.AmazonS3SSL → FileSettings.AmazonS3SSLVerification.",
+    "10.0": "Mattermost v10 introduces changes to supported database deployments: new MySQL installations are no longer supported; existing MySQL support ends with v11. The PostgreSQL 13 minimum begins in v10.6, not v10.0. Review the official v10 changelog and upgrade notes.",
     "10.1": "If using Elasticsearch/OpenSearch: purge and re-index after upgrade (index mapping changed). System Console → Elasticsearch → Purge Indexes → Index Now.",
     "10.2": "LogSettings.FileLevel deprecated — migrate to LogSettings.ConsoleLevel and advanced logging config.",
     "11.7": "Versions 11.7.0–11.7.2 contain a database migration bug for upgrades from ≥10.11.17. Upgrade directly to 11.7.3 or later."
+  },
+  "database_requirements": {
+    "postgres_minimums": [
+      {
+        "from": "9.11.0",
+        "postgres": "11"
+      },
+      {
+        "from": "10.6.0",
+        "postgres": "13"
+      },
+      {
+        "from": "11.0.0",
+        "postgres": "14"
+      },
+      {
+        "from": "12.0.0",
+        "postgres": "15"
+      }
+    ],
+    "mysql_unsupported_from": "11.0.0",
+    "source_url": "https://docs.mattermost.com/deployment-guide/software-hardware-requirements",
+    "mysql_source_url": "https://docs.mattermost.com/product-overview/mattermost-v11-changelog"
   }
 }
