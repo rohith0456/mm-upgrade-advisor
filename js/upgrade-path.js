@@ -168,7 +168,7 @@ function computePath(fromStr, toStr, data, options) {
     });
   }
   const mysqlEnd = (data.database_requirements || {}).mysql_unsupported_from;
-  if (mysqlEnd && parseVer(mysqlEnd) && compareVer(from, parseVer(mysqlEnd)) < 0 && compareVer(to, parseVer(mysqlEnd)) >= 0) {
+  if (!options.pgVersion && mysqlEnd && parseVer(mysqlEnd) && compareVer(from, parseVer(mysqlEnd)) < 0 && compareVer(to, parseVer(mysqlEnd)) >= 0) {
     dbWarnings.push({
       bug_id: 'mysql_removed', severity: 'high', category: 'db_version',
       title: 'MySQL is unsupported in Mattermost v11+',
