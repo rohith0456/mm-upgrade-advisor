@@ -46,25 +46,23 @@ function computePath(fromStr, toStr, data, options) {
   if (compareVer(from, to) === 0) return { error: 'Current and target versions are the same.' };
   if (compareVer(from, to) > 0)  return { error: 'Downgrade paths are not supported.' };
 
-  // Resolve ESR versions as tuples
-  const esrs = (data.esr_versions || [])
-    .map(v => parseVer(v + '.0'))
-    .filter(Boolean)
-    .sort(compareVer);
-
-  // ESR hops strictly between from and to (exclusive of from, inclusive of to)
-  const hops = esrs.filter(esr =>
-    compareVer(esr, from) > 0 && compareVer(esr, to) <= 0
-  );
-
-  // Full ordered path
-  const rawPath = [from, ...hops, to];
-
-  // Deduplicate (in case to IS an ESR already in hops)
-  const path = rawPath.reduce((acc, v) => {
-    if (!acc.length || compareVer(acc[acc.length - 1], v) !== 0) acc.push(v);
-    return acc;
-  }, []);
+  // Use the newest available GA patch in each verified intermediate ESR series.
+  // Never manufacture .0 stops: older initial releases may contain known bugs.
+  const allVersions = (data.versions || []).map(r => parseVer(r.version)).filter(Boolean);
+  const esrSeries = (data.esr_versions || []).filter(v => /^\\d+\\.\\d+$/.test(v));
+  if (!esrSeries.length) return { error: 'Verified ESR release data is unavailable. Cannot calculate a reliable upgrade path.' };
+  const hops = [];
+  for (const series of esrSeries) {
+    const [major, minor] = series.split('.').map(Number);
+    const base = [major, minor, 0];
+    if (compareVer(base, from) <= 0 || compareVer(base, to) >= 0) continue;
+    const patches = allVersions.filter(v => v[0] === major && v[1] === minor && compareVer(v, to) < 0);
+    if (!patches.length) return { error: `No verified release found for ESR ${series}. Upgrade path cannot be calculated.` };
+    patches.sort(compareVer);
+    hops.push(patches[patches.length - 1]);
+  }
+  hops.sort(compareVer);
+  const path = [from, ...hops, to];
 
   // Build a quick lookup map for version records
   const versionMap = {};
@@ -86,7 +84,7 @@ function computePath(fromStr, toStr, data, options) {
     const rec = versionMap[toStr2] || null;
     const upgradeNotes = (rec && rec.upgrade_notes) || notesByMinor[mm] || '';
     const breakingChanges = rec ? (rec.breaking_changes || []) : [];
-    const isESRHop = rec ? rec.release_type === 'esr' : false;
+    const isESRHop = esrSeries.includes(mm);
 
     steps.push({
       fromVer: verToStr(stepFrom),
