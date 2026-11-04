@@ -189,7 +189,7 @@ function computePath(fromStr, toStr, data, options) {
   else if (hopCount > 1) estimatedEffort = 'minor';
 
   // Safety: no critical path-specific bugs and no DB version blockers
-  const isSafe = warnings.every(w => w.severity !== 'critical');
+  const isSafe = warnings.length === 0;
 
   let safeReason = '';
   let safeDetail = '';
