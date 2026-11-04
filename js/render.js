@@ -122,7 +122,7 @@ function renderPath(result, container) {
       ${esrNote}
       <div class="path-row">${fromNode}<span class="path-arrow">→</span>${pathArrows}</div>
       ${stepNotesHtml ? `<div class="step-notes">${stepNotesHtml}</div>` : ''}
-      ${result.clientCompat ? `<p class="compat-note">After this upgrade — Desktop app ${escHtml(result.clientCompat.desktop_min)}+ &middot; Mobile app ${escHtml(result.clientCompat.mobile_min)}+ required &middot; <a href="https://docs.mattermost.com/about/server-client-compatibility-matrix.html" target="_blank" rel="noopener">Full matrix ↗</a></p>` : ''}
+      ${result.clientCompat ? `<p class="compat-note">For this target release — Desktop: ${escHtml(result.clientCompat.desktop)} (<a href="${escHtml(result.clientCompat.desktop_url)}" target="_blank" rel="noopener">desktop release table ↗</a>) &middot; Mobile: ${escHtml(result.clientCompat.mobile)} (<a href="${escHtml(result.clientCompat.mobile_url)}" target="_blank" rel="noopener">mobile release table ↗</a>). Verify supported client versions before rollout.</p>` : `<p class="compat-note">Client compatibility varies by server release. Verify currently supported <a href="https://docs.mattermost.com/product-overview/mattermost-mobile-releases" target="_blank" rel="noopener">mobile</a> and <a href="https://docs.mattermost.com/product-overview/mattermost-desktop-releases" target="_blank" rel="noopener">desktop</a> versions for this target.</p>`}
     </div>`);
 
   // ── High-severity (non-critical) warnings ─────────────────────────────
