@@ -3,7 +3,7 @@
     "generated_at": "2026-11-04T11:54:41+00:00",
     "generated_by": "scripts/update_versions.py",
     "latest_version": "12.0.1",
-    "latest_esr": "11.6.0",
+    "latest_esr": "11.7.14",
     "source_urls": [
       "https://api.github.com/repos/mattermost/mattermost/releases?per_page=100",
       "https://raw.githubusercontent.com/mattermost/docs/main/source/upgrade/important-upgrade-notes.rst",
@@ -18,8 +18,8 @@
     "9.5",
     "9.11",
     "10.5",
-    "11.0",
-    "11.6"
+    "10.11",
+    "11.7"
   ],
   "versions": [
     {
@@ -7118,7 +7118,7 @@
     },
     {
       "version": "10.11.0",
-      "release_type": "regular",
+      "release_type": "esr",
       "release_date": "2025-08-16",
       "headline": "Feature release",
       "breaking_changes": [],
@@ -7508,7 +7508,7 @@
     },
     {
       "version": "11.0.0",
-      "release_type": "esr",
+      "release_type": "major",
       "release_date": "2025-09-16",
       "eol_date": "2026-06-15",
       "headline": "Extended Support Release — first 11.x ESR",
@@ -7938,7 +7938,7 @@
     },
     {
       "version": "11.6.0",
-      "release_type": "esr",
+      "release_type": "regular",
       "release_date": "2026-03-16",
       "eol_date": "2026-12-15",
       "headline": "Extended Support Release — latest ESR",
@@ -8030,7 +8030,7 @@
     },
     {
       "version": "11.7.0",
-      "release_type": "regular",
+      "release_type": "esr",
       "release_date": "2026-04-16",
       "headline": "Feature release",
       "breaking_changes": [],
