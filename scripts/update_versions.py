@@ -87,9 +87,24 @@ def make_session() -> requests.Session:
 
 def fetch_github_releases(session: requests.Session) -> list[dict]:
     print("Phase 1: fetching GitHub releases…")
-    resp = session.get(GITHUB_RELEASES_URL, timeout=20)
-    resp.raise_for_status()
-    releases = resp.json()
+    releases = []
+    page = 1
+    while True:
+        resp = session.get(GITHUB_RELEASES_URL, params={"page": page}, timeout=20)
+        resp.raise_for_status()
+        batch = resp.json()
+        if not isinstance(batch, list):
+            raise ValueError("Unexpected GitHub releases response")
+        if not batch:
+            break
+        releases.extend(batch)
+        if len(batch) < 100:
+            break
+        page += 1
+        if page > 100:
+            raise RuntimeError("Release pagination exceeded 100 pages")
+    if not releases:
+        raise RuntimeError("GitHub returned no releases; refusing to publish empty data")
 
     result = []
     for rel in releases:
