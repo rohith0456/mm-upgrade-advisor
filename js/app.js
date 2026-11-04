@@ -7,7 +7,7 @@ function populateDatalist(data) {
     .filter(v => /^\d+\.\d+\.\d+$/.test(v) && Number(v.split('.')[0]) >= 7)
     .sort((a, b) => {
       const x = a.split('.').map(Number), y = b.split('.').map(Number);
-      return y[0]-x[0] || y[1]-x[1] || y[2]-x[2];
+      return x[0]-y[0] || x[1]-y[1] || x[2]-y[2];
     });
 }
 function setupVersionPicker(input) {
@@ -23,7 +23,7 @@ function setupVersionPicker(input) {
     const q = input.value.trim().replace(/^v/i, '');
     const matches = q ? availableVersions.filter(v => v.startsWith(q)) : availableVersions;
     menu.replaceChildren();
-    for (const version of matches.slice(0, 100)) {
+    for (const version of matches) {
       const option = document.createElement('button');
       option.type = 'button';
       option.className = 'version-option';
@@ -31,12 +31,6 @@ function setupVersionPicker(input) {
       option.addEventListener('pointerdown', e => e.preventDefault());
       option.addEventListener('click', () => { input.value = version; close(); input.focus(); });
       menu.appendChild(option);
-    }
-    if (matches.length > 100) {
-      const hint = document.createElement('div');
-      hint.className = 'version-hint';
-      hint.textContent = 'Type a version prefix to search all releases from v7 onward';
-      menu.appendChild(hint);
     }
     if (!matches.length) {
       const hint = document.createElement('div');
