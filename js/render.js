@@ -101,19 +101,24 @@ function renderPath(result, container) {
     const rec = step.versionData;
     const isESR = step.isESRHop;
     const isLast = i === result.steps.length - 1;
-    const badge = isESR ? ' <span class="path-badge">ESR</span>' : '';
+    // An ESR is a major.minor release family; the final component is the patch.
+    // Keep the exact patch visible so the user knows which artifact to install.
+    const series = step.toVer.split('.').slice(0, 2).join('.');
+    const label = isESR
+      ? `<span>v${escHtml(series)} <span class="path-badge">ESR</span></span><span class="path-patch">Install v${escHtml(step.toVer)}</span>`
+      : `<span>v${escHtml(step.toVer)}</span>`;
     const dlLink = rec && rec.download_url
-      ? `<a href="${escHtml(rec.download_url)}" target="_blank" rel="noopener" class="path-link">↓</a>` : '';
+      ? `<a href="${escHtml(rec.download_url)}" target="_blank" rel="noopener" class="path-link" aria-label="Release details for v${escHtml(step.toVer)}">Release ↗</a>` : '';
     return `
       <span class="path-node ${isLast ? 'path-target' : ''}">
-        ${escHtml(step.toVer)}${badge}${dlLink}
+        ${label}${dlLink}
       </span>`;
   }).join('<span class="path-arrow">→</span>');
 
   const fromNode = `<span class="path-node path-from">${escHtml(result.from)}<span class="path-you">you are here</span></span>`;
 
   const esrNote = hasESRHops
-    ? `<p class="path-note">This path hops through each ESR in sequence — the consecutive ESR route recommended for tested upgrade transitions. Skipping ESRs may be supported but is not tested by Mattermost; review prerequisites for every hop.</p>`
+    ? `<p class="path-note">The ESR label names the release series (for example, v10.5); the Install version names the specific patch release (for example, v10.5.14). Use that exact patch when following the consecutive ESR route. Review prerequisites for every hop.</p>`
     : '';
 
   parts.push(`
