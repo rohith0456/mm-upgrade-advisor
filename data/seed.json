@@ -212,7 +212,7 @@
       "headline": "Final 9.x Extended Support Release — security hardening",
       "breaking_changes": [],
       "upgrade_notes": "ESR release. Last ESR in the 9.x series. TLS 1.3 enforcement option added. Improved SAML/LDAP diagnostic tools. Upgrade to 10.5 ESR when ready to move to 10.x.",
-      "min_pg_version": "11",
+      "min_pg_version": null,
       "min_mysql_version": null,
       "security_fix_count": 5,
       "download_url": "https://github.com/mattermost/mattermost/releases/tag/v9.11.0",
@@ -546,13 +546,13 @@
     "11.7": {
       "desktop": "6.2 ESR or 6.3",
       "mobile": "Use the latest supported mobile release",
-      "desktop_url": "https://docs.mattermost.com/about/mattermost-desktop-releases",
+      "desktop_url": "https://docs.mattermost.com/product-overview/mattermost-desktop-releases",
       "mobile_url": "https://docs.mattermost.com/product-overview/mattermost-mobile-releases"
     }
   },
   "upgrade_notes_by_version": {
     "9.8": "TeamSettings.EnableOpenServer is deprecated — replace with TeamSettings.EnableUserCreation in your config.",
-    "10.0": "Mattermost v10 introduces changes to supported database deployments: new MySQL installations are no longer supported; existing MySQL support ends with v11. The PostgreSQL 13 minimum begins in v10.6, not v10.0. Review the official v10 changelog and upgrade notes.",
+    "10.0": "Mattermost v10 stops supporting new MySQL installations; existing MySQL deployments must migrate before v11. PostgreSQL 11+ is required by v10.0; PostgreSQL 13+ starts at v10.6. Review the release-specific upgrade notes.",
     "10.1": "If using Elasticsearch/OpenSearch: purge and re-index after upgrade (index mapping changed). System Console → Elasticsearch → Purge Indexes → Index Now.",
     "10.2": "LogSettings.FileLevel deprecated — migrate to LogSettings.ConsoleLevel and advanced logging config.",
     "11.7": "Versions 11.7.0–11.7.2 contain a database migration bug for upgrades from ≥10.11.17. Upgrade directly to 11.7.3 or later."
@@ -560,7 +560,7 @@
   "database_requirements": {
     "postgres_minimums": [
       {
-        "from": "9.11.0",
+        "from": "10.0.0",
         "postgres": "11"
       },
       {
@@ -577,7 +577,7 @@
       }
     ],
     "mysql_unsupported_from": "11.0.0",
-    "source_url": "https://docs.mattermost.com/deployment-guide/software-hardware-requirements",
-    "mysql_source_url": "https://docs.mattermost.com/product-overview/mattermost-v11-changelog"
+    "source_url": "https://docs.mattermost.com/administration-guide/upgrade/important-upgrade-notes",
+    "mysql_source_url": "https://docs.mattermost.com/administration-guide/upgrade/important-upgrade-notes"
   }
 }
