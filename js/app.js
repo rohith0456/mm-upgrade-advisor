@@ -1,14 +1,32 @@
 let appData = null;
 
+// Keep suggestions manageable: browsers truncate very large native datalists.
+let availableVersions = [];
+const MAX_SUGGESTIONS = 80;
+
 function populateDatalist(data) {
-  const versions = (data.versions || []).map(v => v.version).sort((a, b) => {
-    const parse = x => x.split('.').map(Number);
-    const [am, bm] = [a, b].map(parse);
-    for (let i = 0; i < 3; i++) { const d = (am[i]||0)-(bm[i]||0); if (d) return d; }
-    return 0;
-  });
+  availableVersions = [...new Set((data.versions || []).map(v => v.version))]
+    .filter(v => /^\\d+\\.\\d+\\.\\d+$/.test(v))
+    .sort((a, b) => {
+      const aa = a.split('.').map(Number);
+      const bb = b.split('.').map(Number);
+      for (let i = 0; i < 3; i++) {
+        if (aa[i] !== bb[i]) return bb[i] - aa[i];
+      }
+      return 0;
+    });
+  refreshVersionSuggestions('');
+}
+
+function refreshVersionSuggestions(query) {
+  const q = String(query || '').trim().replace(/^v/i, '');
+  const matches = q ? availableVersions.filter(v => v.startsWith(q)) : availableVersions;
   const dl = document.getElementById('version-list');
-  dl.innerHTML = versions.map(v => `<option value="${v}">`).join('');
+  dl.replaceChildren(...matches.slice(0, MAX_SUGGESTIONS).map(v => {
+    const option = document.createElement('option');
+    option.value = v;
+    return option;
+  }));
 }
 
 function updateMeta(data) {
@@ -37,6 +55,11 @@ function onSubmit(e) {
 function init(data) {
   appData = data;
   populateDatalist(data);
+  for (const id of ['from-version', 'to-version']) {
+    const input = document.getElementById(id);
+    input.addEventListener('input', () => refreshVersionSuggestions(input.value));
+    input.addEventListener('focus', () => refreshVersionSuggestions(input.value));
+  }
   updateMeta(data);
   document.getElementById('upgrade-form').addEventListener('submit', onSubmit);
   const params = new URLSearchParams(window.location.search);
