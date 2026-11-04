@@ -367,7 +367,7 @@ def main() -> int:
 
     upgrade_notes = fetch_upgrade_notes(session)
     esr_versions = seed_esrs  # Verified historical ESR schedule; avoid unverified scraper overrides
-    client_compat = fetch_client_compatibility(session, existing_compat)
+    # Never merge obsolete major-wide client minimums from the retired compatibility page.\n    client_compat = {k: v for k, v in existing_compat.items() if "." in k and isinstance(v, dict) and v.get("desktop_url") and v.get("mobile_url")}
 
     # Merge
     merged_versions, added, updated = merge(
@@ -385,7 +385,7 @@ def main() -> int:
         "meta": compute_meta(merged_versions, esr_versions, existing_data.get("meta")),
         "esr_versions": esr_versions if esr_versions else seed_esrs,
         "versions": merged_versions,
-        "known_bugs": existing_bugs,  # never overwrite — curated manually
+        "database_requirements": db_requirements,\n        "known_bugs": [b for b in existing_bugs if b.get("bug_id") not in ("csrf_integration_403", "pg12_dropped_10_0")],
         "client_compatibility": client_compat,
         "upgrade_notes_by_version": merged_notes,
     }
