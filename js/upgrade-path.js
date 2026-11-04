@@ -55,7 +55,7 @@ function computePath(fromStr, toStr, data, options) {
   for (const series of esrSeries) {
     const [major, minor] = series.split('.').map(Number);
     const base = [major, minor, 0];
-    if (compareVer(base, from) <= 0 || compareVer(base, to) >= 0) continue;
+    if (compareVer(base, from) <= 0 || compareVer(base, to) >= 0 || (major === to[0] && minor === to[1])) continue;
     const patches = allVersions.filter(v => v[0] === major && v[1] === minor && compareVer(v, to) < 0);
     if (!patches.length) return { error: `No verified release found for ESR ${series}. Upgrade path cannot be calculated.` };
     patches.sort(compareVer);
