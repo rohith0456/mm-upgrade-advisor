@@ -140,31 +140,43 @@ function computePath(fromStr, toStr, data, options) {
   sortBySeverity(pathSpecificWarnings);
   sortBySeverity(generalWarnings);
 
-  // Algorithmic DB version check — fires when user supplies their PostgreSQL version
+  // Database requirements are release thresholds, not unconditional incidents.
   const dbWarnings = [];
-  if (options.pgVersion) {
-    const userPg = parseFloat(options.pgVersion);
-    if (!isNaN(userPg)) {
-      for (const step of steps) {
-        const rec = step.versionData;
-        if (rec && rec.min_pg_version) {
-          const minPg = parseFloat(rec.min_pg_version);
-          if (!isNaN(minPg) && userPg < minPg) {
-            dbWarnings.push({
-              bug_id: 'pg_version_check',
-              severity: 'critical',
-              title: `PostgreSQL upgrade required before v${rec.version}`,
-              description: `PostgreSQL ${options.pgVersion} is below the minimum required (${rec.min_pg_version}) for Mattermost v${rec.version}. The server will not start.`,
-              workaround: `Upgrade PostgreSQL to ${rec.min_pg_version}+ before upgrading Mattermost to v${rec.version}. Do not upgrade both simultaneously.`,
-              source_url: 'https://docs.mattermost.com/install/software-hardware-requirements.html'
-            });
-            break;
-          }
-        }
-      }
-    }
+  const dbRules = (data.database_requirements || {}).postgres_minimums || [];
+  const orderedRules = [...dbRules].filter(rule => parseVer(rule.from)).sort((a, b) => compareVer(parseVer(a.from), parseVer(b.from)));
+  const applicable = orderedRules.filter(rule => compareVer(to, parseVer(rule.from)) >= 0);
+  const required = applicable.length ? applicable[applicable.length - 1] : null;
+  const dbSource = (data.database_requirements || {}).source_url || 'https://docs.mattermost.com/administration-guide/upgrade/important-upgrade-notes';
+  const userPg = options.pgVersion ? Number(options.pgVersion) : null;
+  if (required && Number.isFinite(userPg) && userPg > 0 && userPg < Number(required.postgres)) {
+    const firstBlocked = orderedRules.find(rule => Number(rule.postgres) > userPg && compareVer(to, parseVer(rule.from)) >= 0 && compareVer(from, parseVer(rule.from)) < 0);
+    dbWarnings.push({
+      bug_id: 'postgres_requirement', severity: 'critical', category: 'db_version',
+      title: 'PostgreSQL upgrade needed: v' + required.postgres + '+ for the target release',
+      description: 'Selected PostgreSQL ' + userPg + ' is below the supported minimum of ' + required.postgres + ' for Mattermost ' + verToStr(to) + '.' + (firstBlocked ? ' The path first crosses an incompatible database requirement at v' + firstBlocked.from + '.' : '') + ' Upgrade PostgreSQL before the affected Mattermost hop; unsupported versions can prevent startup.',
+      workaround: 'Plan a tested PostgreSQL upgrade to v' + required.postgres + '+ before the Mattermost upgrade. Verify backups, database extensions and compatibility.',
+      source_url: dbSource
+    });
+  } else if (required && (!Number.isFinite(userPg) || !userPg)) {
+    const crossing = orderedRules.filter(rule => compareVer(from, parseVer(rule.from)) < 0 && compareVer(to, parseVer(rule.from)) >= 0);
+    if (crossing.length) dbWarnings.push({
+      bug_id: 'postgres_verify', severity: 'high', category: 'db_version',
+      title: 'Verify PostgreSQL ' + required.postgres + '+ before upgrading',
+      description: 'The target Mattermost release requires PostgreSQL ' + required.postgres + '+. The upgrade crosses database support changes at ' + crossing.map(rule => 'v' + rule.from + ' (PG ' + rule.postgres + '+)').join(', ') + '. PostgreSQL version was not provided, so compatibility cannot be confirmed.',
+      workaround: 'Check your deployed PostgreSQL version and upgrade it before the first incompatible Mattermost hop if necessary.',
+      source_url: dbSource
+    });
   }
-
+  const mysqlEnd = (data.database_requirements || {}).mysql_unsupported_from;
+  if (mysqlEnd && parseVer(mysqlEnd) && compareVer(from, parseVer(mysqlEnd)) < 0 && compareVer(to, parseVer(mysqlEnd)) >= 0) {
+    dbWarnings.push({
+      bug_id: 'mysql_removed', severity: 'high', category: 'db_version',
+      title: 'MySQL is unsupported in Mattermost v11+',
+      description: 'If your current deployment uses MySQL, migrate to a supported PostgreSQL version before upgrading to Mattermost v11 or later. This warning is conditional; it does not apply to existing PostgreSQL deployments.',
+      workaround: 'Confirm your database engine and follow the official MySQL-to-PostgreSQL migration documentation before upgrading Mattermost.',
+      source_url: (data.database_requirements || {}).mysql_source_url || dbSource
+    });
+  }
   const warnings = [...pathSpecificWarnings, ...generalWarnings, ...dbWarnings];
 
   // Effort estimate
@@ -177,7 +189,7 @@ function computePath(fromStr, toStr, data, options) {
   else if (hopCount > 1) estimatedEffort = 'minor';
 
   // Safety: no critical path-specific bugs and no DB version blockers
-  const isSafe = [...pathSpecificWarnings, ...dbWarnings].filter(w => w.severity === 'critical').length === 0;
+  const isSafe = warnings.every(w => w.severity !== 'critical');
 
   let safeReason = '';
   let safeDetail = '';
@@ -187,7 +199,7 @@ function computePath(fromStr, toStr, data, options) {
   }
 
   const compatMap = data.client_compatibility || {};
-  const clientCompat = compatMap[String(to[0])] || null;
+  const clientCompat = compatMap[majorMinor(to)] || null;
 
   return { from: verToStr(from), to: verToStr(to), steps, warnings, estimatedEffort, totalSteps: steps.length, isSafe, safeReason, safeDetail, clientCompat };
 }
