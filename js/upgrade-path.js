@@ -49,7 +49,7 @@ function computePath(fromStr, toStr, data, options) {
   // Use the newest available GA patch in each verified intermediate ESR series.
   // Never manufacture .0 stops: older initial releases may contain known bugs.
   const allVersions = (data.versions || []).map(r => parseVer(r.version)).filter(Boolean);
-  const esrSeries = (data.esr_versions || []).filter(v => /^\\d+\\.\\d+$/.test(v));
+  const esrSeries = (data.esr_versions || []).filter(v => /^\d+\.\d+$/.test(v));
   if (!esrSeries.length) return { error: 'Verified ESR release data is unavailable. Cannot calculate a reliable upgrade path.' };
   const hops = [];
   for (const series of esrSeries) {
